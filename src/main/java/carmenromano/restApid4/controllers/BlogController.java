@@ -12,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -54,12 +56,11 @@ public class BlogController {
     private void findAndDeleteBlog(@PathVariable int blogId) {
         this.blogService.findAndDelete(blogId);
     }
+@PostMapping("/{blogId}/avatar")
+public String uploadAvatar(@RequestParam("avatar") MultipartFile image) throws IOException {
+
+
+    return this.blogService.uploadImage(image);
 }
-
-///TEST
-
-// @GetMapping("/readingTime")
-// public List<Blog> findByReadingTime(@RequestParam int readingTime){
-//     return this.blogService.findByReadingTime(readingTime);
-// }
+}
 
