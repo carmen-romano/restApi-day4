@@ -70,10 +70,7 @@ public class BlogService {
         Blog found = this.findById(id);
         this.blogPostsRepository.delete(found);
     }
-
-    public String uploadImage(MultipartFile file) throws IOException {
-        return (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
-    }
+    
 
     }
 

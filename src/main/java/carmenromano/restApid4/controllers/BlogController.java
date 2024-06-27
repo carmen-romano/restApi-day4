@@ -56,11 +56,8 @@ public class BlogController {
     private void findAndDeleteBlog(@PathVariable int blogId) {
         this.blogService.findAndDelete(blogId);
     }
-@PostMapping("/{blogId}/avatar")
-public String uploadAvatar(@RequestParam("avatar") MultipartFile image) throws IOException {
 
 
-    return this.blogService.uploadImage(image);
-}
+
 }
 

@@ -5,13 +5,19 @@ import carmenromano.restApid4.exceptions.BadRequestException;
 import carmenromano.restApid4.exceptions.NotFoundException;
 import carmenromano.restApid4.payloads.AuthorPayload;
 import carmenromano.restApid4.repositories.AuthorsRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +28,8 @@ public class AuthorService {
 
     @Autowired
     private AuthorsRepository authorsRepository;
+    @Autowired
+    private Cloudinary cloudinary;
 
     public Page<Author> getAllAuthors(int pageNumber, int pageSize, String sortBy) {
         if (pageSize > 100) pageSize = 100;
@@ -60,5 +68,11 @@ public class AuthorService {
         this.authorsRepository.delete(found);
         }
 
+    public Author uploadImage(int id, MultipartFile file) throws IOException {
+        Author found = this.findById(id);
+        String avatarURL = (String)this.cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+        found.setAvatar(avatarURL);
+        return (Author)this.authorsRepository.save(found);
+    }
     }
 

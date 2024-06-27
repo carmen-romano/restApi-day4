@@ -1,6 +1,5 @@
 package carmenromano.restApid4.controllers;
 
-
 import carmenromano.restApid4.entities.Author;
 import carmenromano.restApid4.exceptions.BadRequestException;
 import carmenromano.restApid4.payloads.AuthorPayload;
@@ -12,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -55,11 +56,11 @@ public class AuthorController {
         this.authorService.findAndDelete(authorId);
     }
 
+    @PostMapping("/{authorId}/avatar")
+    public Author uploadAvatar(@RequestParam("avatar") MultipartFile image,  @PathVariable int authorId) throws IOException {
+        return this.authorService.uploadImage(authorId, image);
+    }
 
 
-  //  @GetMapping("/nome")
-  //  public Author findByName(@RequestParam String nome){
-  //      return this.authorService.findByName(nome);
-  //  }
 
 }
